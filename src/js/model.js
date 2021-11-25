@@ -10,7 +10,7 @@ export function getItems(url) {
 }
 
 export function addItem(url, itemTitle) {
-  fetch(url, {
+  return fetch(url, {
       method: "POST",
       body: JSON.stringify({
         title: itemTitle,
@@ -30,7 +30,7 @@ export function addItem(url, itemTitle) {
 }
 
 export function changeItem(url, itemId, itemCompletedStatus) {
-  fetch(url + "/" + itemId, {
+  return fetch(url + "/" + itemId, {
       method: "PATCH",
       body: JSON.stringify({
         completed: itemCompletedStatus,
@@ -49,7 +49,7 @@ export function changeItem(url, itemId, itemCompletedStatus) {
 }
 
 export function deteteItem(url, itemId) {
-  fetch(url + "/" + itemId, {
+  return fetch(url + "/" + itemId, {
     method: "DELETE",
   })
   .then((response) => {
