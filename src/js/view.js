@@ -11,7 +11,7 @@ model.getItems(url)
 form.addEventListener("submit", (event) => {
   event.preventDefault();
   model.addItem(url, formText.value);
-  model.getItems(url);
+  //model.getItems(url);
   formText.value = null;
 });
 
@@ -23,16 +23,16 @@ form.addEventListener("submit", (event) => {
 
 itemBlock.addEventListener("click", (event) => {
   if (event.target.dataset.pointer == "deleteItem") {
-    // model.deteteItem(url, event.target.closest(".item").id);
-    // model.getItems(url);
+    model.deteteItem(url, event.target.closest(".js-render__item").dataset.id);
   }
 
   if (event.target.dataset.pointer == "changeStatusItem") {
-    // model.changeItem(
-    //   url,
-    //   event.target.closest(".item").id,
-    //   event.target.checked
-    // );
-    // model.getItems(url);
+    model.changeItem(
+      url,
+      event.target.closest(".js-render__item").dataset.id,
+      event.target.checked
+    );
   }
+
+  //model.getItems(url);
 });
