@@ -1,29 +1,41 @@
-const itemBlock = document.querySelector('.js-render');
-const infoBlock = document.querySelector('.js-main-info');
+import * as model from './model.js'
+import * as view from "./view.js";
 
-export function render(obj) {
-  removeAllChildNodes(itemBlock);
-  obj.forEach(element => 
-    itemBlock.innerHTML += 
-  `<div class="js-render__item" data-id='${element.id}'>
-    <input type="checkbox" ${element.completed ? "checked" : ""} class="js-render__item-status" data-pointer="changeStatusItem">
-    <span class="js-render__item-txt ${element.completed ? "js-render__item-txt--checked": ""}">${element.title}</span>
-    <div class="js-render__item-delete" data-pointer="deleteItem"></div>
-  </div>`);
+const url = "http://localhost:3000/comments";
+const form = document.querySelector('.js-main-form');
+const formText = document.querySelector('.js-main-form-text');
+let itemBlock = document.querySelector(".js-render");
+
+const getItemsAndRender = function getItems(url) {
+  return fetch(url)
+    .then((response) => response.json())
+    .then((json) => {
+      view.render(json);
+      view.quantityItem(json.filter((value) => !value.completed).length);
+    });
 }
 
-export function quantityItem(quantity) {
-  if (quantity) {
-      if (quantity === 1) {
-        infoBlock.textContent = quantity + " item left";
-      } else {
-        infoBlock.textContent = quantity + " items left";
-      }
+getItemsAndRender(url);
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  model.addItem(url, formText.value);
+  getItemsAndRender(url);
+  formText.value = null;
+});
+
+itemBlock.addEventListener("click", (event) => {
+  if (event.target.dataset.pointer == "deleteItem") {
+    model.deteteItem(url, event.target.closest(".js-render__item").dataset.id);
   }
-}
 
-function removeAllChildNodes(parent) {
-  while (parent.firstChild) {
-      parent.removeChild(parent.firstChild);
+  if (event.target.dataset.pointer == "changeStatusItem") {
+    model.changeItem(
+      url,
+      event.target.closest(".js-render__item").dataset.id,
+      event.target.checked
+    );
   }
-}
+
+  getItemsAndRender(url);
+});

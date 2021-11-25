@@ -1,38 +1,32 @@
-import * as model from './model.js'
+const itemBlock = document.querySelector('.js-render');
+const infoBlock = document.querySelector('.js-main-info');
 
-const url = "http://localhost:3000/comments";
-const form = document.querySelector('.js-main-form');
-const formText = document.querySelector('.js-main-form-text');
-let itemBlock = document.querySelector(".js-render");
-//const deteteBtn = document.getElementsByClassName('js-render__item-delete');
+export function render(obj) {
+  removeAllChildNodes(itemBlock);
+  let renderResult = '';
+  obj.forEach(element =>
+    renderResult += `<div class="js-render__item" data-id='${element.id}'>
+    <input type="checkbox" ${element.completed ? "checked" : ""} class="js-render__item-status" data-pointer="changeStatusItem">
+    <span class="js-render__item-txt ${element.completed ? "js-render__item-txt--checked": ""}">${element.title}</span>
+    <div class="js-render__item-delete" data-pointer="deleteItem"></div>
+  </div>`);
+  itemBlock.insertAdjacentHTML('beforeend', renderResult)
+}
 
-model.getItems(url)
-
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
-  model.addItem(url, formText.value);
-  //model.getItems(url);
-  formText.value = null;
-});
-
-//console.log(deteteBtn);
-
-// deteteBtn.addEventListener('click', () => {
-//   console.log(this);
-// })
-
-itemBlock.addEventListener("click", (event) => {
-  if (event.target.dataset.pointer == "deleteItem") {
-    model.deteteItem(url, event.target.closest(".js-render__item").dataset.id);
+export function quantityItem(quantity) {
+  if (!quantity) {
+    return;
   }
 
-  if (event.target.dataset.pointer == "changeStatusItem") {
-    model.changeItem(
-      url,
-      event.target.closest(".js-render__item").dataset.id,
-      event.target.checked
-    );
+  if (quantity === 1) {
+    infoBlock.textContent = quantity + " item left";
   }
 
-  //model.getItems(url);
-});
+  infoBlock.textContent = quantity + " items left";
+}
+
+function removeAllChildNodes(parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
+}
