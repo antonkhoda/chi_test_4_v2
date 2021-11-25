@@ -13,8 +13,9 @@ export function render(obj) {
   itemBlock.insertAdjacentHTML('beforeend', renderResult)
 }
 
-export function quantityItem(quantity) {
-  if (!quantity) {
+export function quantityItem(quantity, arr) {
+  if (!arr.length) {
+    infoBlock.classList.add('display-none');
     return;
   }
 
@@ -23,6 +24,7 @@ export function quantityItem(quantity) {
   }
 
   infoBlock.textContent = quantity + " items left";
+  infoBlock.classList.remove('display-none');
 }
 
 function removeAllChildNodes(parent) {

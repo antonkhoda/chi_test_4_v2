@@ -1,3 +1,8 @@
+export function getItems(url) {
+  return fetch(url)
+    .then((response) => response.json());
+}
+
 export function addItem(url, itemTitle) {
   return fetch(url, {
       method: "POST",
