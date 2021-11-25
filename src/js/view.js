@@ -20,7 +20,7 @@ export function quantityItem(quantity, arr) {
   }
 
   if (quantity === 1) {
-    infoBlock.textContent = quantity + " item left";
+    return infoBlock.textContent = quantity + " item left";
   }
 
   infoBlock.textContent = quantity + " items left";
